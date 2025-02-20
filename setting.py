@@ -1,1 +1,1 @@
-a = 11
+WIGHT, HEIGHT = 800, 600
