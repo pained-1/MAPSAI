@@ -9,13 +9,13 @@ from pygame_widgets.textbox import TextBox
 
 
 def search(x, y, z=20):
-    server_address = 'https://static-maps.yandex.ru/v1?'
-    api_key = 'f3a0fe3a-b07e-4840-a1da-06f18b2ddf13'
-    ll_spn = f'll={str(x)},{str(y)}&spn=1,1'
-    mashtab = f"z={z}"
+    server_address = "https://static-maps.yandex.ru/v1?"
+    api_key = "f3a0fe3a-b07e-4840-a1da-06f18b2ddf13"
+    ll_spn = f"ll={str(x)},{str(y)}&spn=1,1"
+    mash_tab = f"z={z}"
     # Готовим запрос.
     # x, y = "37.530887", "55.703118"
-    map_request = f"{server_address}{ll_spn}&{mashtab}&apikey={api_key}"
+    map_request = f"{server_address}{ll_spn}&{mash_tab}&apikey={api_key}"
     response = requests.get(map_request)
 
     if not response:
@@ -39,8 +39,8 @@ pygame.init()
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((WIGHT, HEIGHT))
 
-# Заготовка для поле ввода
-user_text = ''
+# Заготовка для поля ввода
+user_text = ""
 base_font = pygame.font.Font(None, 40)
 input_rect = pygame.Rect(10, 500, 140, 32)
 color_active = pygame.Color("lightskyblue")
@@ -48,8 +48,8 @@ color_passive = pygame.Color("white")
 color = color_passive
 
 # Заготовка для клавиши Start
-smallfont = pygame.font.SysFont('Corbel', 35)
-text = smallfont.render('Start', True, (0, 0, 0))
+small_font = pygame.font.SysFont("Corbel", 35)
+text = small_font.render("Start", True, (0, 0, 0))
 
 # Заготовка для слайдера
 slider = Slider(screen, 250, 500, 150, 20, min=0, max=21, step=1)
@@ -58,7 +58,7 @@ output.disable()
 
 running = True
 active = False
-buuton_click = False
+button_click = False
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -69,7 +69,7 @@ while running:
             else:
                 active = False
             if button_rect.collidepoint(event.pos):
-                buuton_click = True
+                button_click = True
             # if the key is physically pressed down
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_BACKSPACE:
@@ -99,15 +99,15 @@ while running:
     events = pygame.event.get()
     pygame_widgets.update(events)
 
-    if buuton_click:
-        buuton_click = False
+    if button_click:
+        button_click = False
         try:
             z1 = str(slider.getValue())
             x = user_text.split(",")[0]
             y = user_text.split(",")[1]
             search(x, y, z=z1)
         except:
-            print("В ЗАПРСОЕ ЕСТЬ ОШИБКА ВВЕДИТЕ X И Y ЧЕРЕЗ ЗАПЯТУЮ БЕЗ ПРОБЛЕОВ")
+            print("В ЗАПРСОЕ ЕСТЬ ОШИБКА ВВЕДИТЕ X И Y ЧЕРЕЗ ЗАПЯТУЮ БЕЗ ПРОБЕЛОВ")
 
     pygame.display.flip()
     clock.tick(60)
