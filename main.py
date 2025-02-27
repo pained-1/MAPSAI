@@ -68,9 +68,11 @@ while running:
                 # stores text except last letter
                 user_text = user_text[0:-1]
             elif event.key == pygame.K_PAGEUP:
-                slider.setValue(z1 + 1)
+                if z1 < 21:
+                    slider.setValue(z1 + 1)
             elif event.key == pygame.K_PAGEDOWN:
-                slider.setValue(z1 - 1)
+                if z1 > 0:
+                    slider.setValue(z1 - 1)
             else:
                 user_text += event.unicode
 
