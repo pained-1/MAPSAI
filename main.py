@@ -73,6 +73,24 @@ while running:
             elif event.key == pygame.K_PAGEDOWN:
                 if z1 > 0:
                     slider.setValue(z1 - 1)
+
+            elif event.key == pygame.K_UP:
+                y += 0.1
+                search(x, y, z=z1)
+                screen.blit(pygame.image.load(map_file), (0, 0))
+            elif event.key == pygame.K_DOWN:
+                y -= 0.1
+                search(x, y, z=z1)
+                screen.blit(pygame.image.load(map_file), (0, 0))
+            elif event.key == pygame.K_RIGHT:
+                x += 0.1
+                search(x, y, z=z1)
+                screen.blit(pygame.image.load(map_file), (0, 0))
+            elif event.key == pygame.K_LEFT:
+                x -= 0.1
+                search(x, y, z=z1)
+                screen.blit(pygame.image.load(map_file), (0, 0))
+
             else:
                 user_text += event.unicode
 

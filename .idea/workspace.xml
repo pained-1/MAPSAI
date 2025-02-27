@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c839c126-1d51-40de-b947-5c400daeda9f" name="Changes" comment="set pgup and pgdn buttons" />
+    <list default="true" id="c839c126-1d51-40de-b947-5c400daeda9f" name="Changes" comment="fix bugs">
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -120,7 +122,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740670064251</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="fix bugs">
+      <option name="closed" value="true" />
+      <created>1740670331701</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1740670331701</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -137,6 +147,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="geo" />
     <MESSAGE value="set pgup and pgdn buttons" />
-    <option name="LAST_COMMIT_MESSAGE" value="set pgup and pgdn buttons" />
+    <MESSAGE value="fix bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix bugs" />
   </component>
 </project>
