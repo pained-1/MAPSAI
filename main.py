@@ -10,7 +10,7 @@ def search(x, y, z=20):
     ll = f"ll={x},{y}"
     # Готовим запрос.
     # x, y = "37.530887", "55.703118 (37.530887,55.703118)"
-    map_request = f"{server_address}{ll}&z={z}&apikey={api_key}"
+    map_request = f"{server_address}{ll}&z={z}&theme={theme}&apikey={api_key}"
     response = requests.get(map_request)
     if not response:
         print("Ошибка выполнения запроса:")
@@ -27,6 +27,7 @@ def search(x, y, z=20):
 # СТАНДАРТНОЕ ИЗОБРОЖЕНИЕ
 z1 = 10
 x, y = 37.530887, 55.703118
+theme = "light"
 map_file = search(x, y, z=z1)
 # Инициализируем pygame
 
@@ -42,9 +43,14 @@ color_passive = pygame.Color("grey")
 color = color_passive
 
 # Заготовка для клавиши Start
-small_font = pygame.font.SysFont("Corbel", 35)
-text = small_font.render("Start", True, (0, 0, 0))
-button_rect = pygame.Rect(500, 500, 140, 40)
+small_font_start = pygame.font.SysFont("Corbel", 35)
+text_start = small_font_start.render("Start", True, (0, 0, 0))
+button_rect_start = pygame.Rect(500, 500, 140, 40)
+
+# Заготовка для клавиши change theme
+small_font_theme = pygame.font.SysFont("Corbel", 25)
+text_theme = small_font_theme.render("Change theme", True, (0, 0, 0))
+button_rect_theme = pygame.Rect(450, 550, 150, 40)
 
 # Заготовка для слайдера
 slider = Slider(screen, 250, 500, 150, 20, min=0, max=21, step=1)
@@ -60,8 +66,13 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if button_rect.collidepoint(event.pos):
+            if button_rect_start.collidepoint(event.pos):
                 button_click = True
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if button_rect_theme.collidepoint(event.pos):
+                theme = "light" if theme == "dark" else "dark"
+                search(x, y, z=z1)
+                screen.blit(pygame.image.load(map_file), (0, 0))
             # if the key is physically pressed down
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_BACKSPACE:
@@ -90,7 +101,6 @@ while running:
                 x -= 0.1
                 search(x, y, z=z1)
                 screen.blit(pygame.image.load(map_file), (0, 0))
-
             else:
                 user_text += event.unicode
 
@@ -101,8 +111,12 @@ while running:
     input_rect.w = max(100, text_surface.get_width() + 10)
 
     # Вывод кнопки Start на экран
-    pygame.draw.rect(screen, (255, 255, 255), button_rect)
-    screen.blit(text, (500, 500))
+    pygame.draw.rect(screen, (255, 255, 255), button_rect_start)
+    screen.blit(text_start, (500, 500))
+
+    # Вывод кнопки theme на экран
+    pygame.draw.rect(screen, (255, 255, 255), button_rect_theme)
+    screen.blit(text_theme, (450, 550))
 
     # Вывод слайдера
     output.setText(slider.getValue())
