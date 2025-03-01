@@ -127,6 +127,8 @@ while running:
         button_click = False
         try:
             x, y = user_text.split(",")
+            x = float(x)
+            y = float(y)
             search(x, y, z=z1)
             screen.blit(pygame.image.load(map_file), (0, 0))
         except:
