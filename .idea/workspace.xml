@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c839c126-1d51-40de-b947-5c400daeda9f" name="Changes" comment="fix bags(2)">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_02_2025_17_50_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_02_2025_17_50__Changes_.xml" beforeDir="false" />
+    <list default="true" id="c839c126-1d51-40de-b947-5c400daeda9f" name="Changes" comment="геокодер(но он не нужен)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -141,7 +139,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740789725202</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="геокодер(но он не нужен)">
+      <option name="closed" value="true" />
+      <created>1740856527060</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1740856527060</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -160,6 +166,7 @@
     <MESSAGE value="set pgup and pgdn buttons" />
     <MESSAGE value="fix bugs" />
     <MESSAGE value="fix bags(2)" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix bags(2)" />
+    <MESSAGE value="геокодер(но он не нужен)" />
+    <option name="LAST_COMMIT_MESSAGE" value="геокодер(но он не нужен)" />
   </component>
 </project>
