@@ -2,6 +2,36 @@ import os, sys, pygame, requests, pygame_widgets
 from setting import *
 from pygame_widgets.slider import Slider
 from pygame_widgets.textbox import TextBox
+import requests
+
+
+def geocoder(adress):
+    server_address = 'http://geocode-maps.yandex.ru/1.x/?'
+    api_key = '8013b162-6b42-4997-9691-77b7074026e0'
+    geocode = adress
+    # Готовим запрос.
+    geocoder_request = f'{server_address}apikey={api_key}&geocode={geocode}&format=json'
+
+    # Выполняем запрос.
+    response = requests.get(geocoder_request)
+    if response:
+        # Преобразуем ответ в json-объект
+        json_response = response.json()
+
+        # Получаем первый топоним из ответа геокодера.
+        # Согласно описанию ответа, он находится по следующему пути:
+        toponym = json_response["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]
+        # Полный адрес топонима:
+        toponym_address = toponym["metaDataProperty"]["GeocoderMetaData"]["text"]
+        # Координаты центра топонима:
+        toponym_coodrinates = toponym["Point"]["pos"]
+        # Печатаем извлечённые из ответа поля:
+        # print(toponym_address, "имеет координаты:", toponym_coodrinates)
+    else:
+        print("Ошибка выполнения запроса:")
+        print(geocoder_request)
+        print("Http статус:", response.status_code, "(", response.reason, ")")
+    return toponym_coodrinates
 
 
 def search(x, y, z=20):
@@ -35,12 +65,16 @@ pygame.init()
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((WIGHT, HEIGHT))
 
-# Заготовка для поля ввода
+# Заготовка для поля ввода координат
 user_text = ""
 base_font = pygame.font.Font(None, 40)
 input_rect = pygame.Rect(10, 500, 140, 32)
 color_passive = pygame.Color("grey")
 color = color_passive
+
+# Заготовка для поля ввода адресса с использованием прошлых заготовок
+input_rect_adress = pygame.Rect(10, 550, 140, 32)
+user_text_adress = ""
 
 # Заготовка для клавиши Start
 small_font_start = pygame.font.SysFont("Corbel", 35)
@@ -60,14 +94,23 @@ output.disable()
 running = True
 active = False
 button_click = False
+click_input_coordinates = False
+click_input_adress = False
 screen.blit(pygame.image.load(map_file), (0, 0))
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = event.pos
             if button_rect_start.collidepoint(event.pos):
                 button_click = True
+            if input_rect_adress.collidepoint(mouse_x, mouse_y):
+                click_input_adress = True
+                click_input_coordinates = False
+            if input_rect.collidepoint(mouse_x, mouse_y):
+                click_input_coordinates = True
+                click_input_adress = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             if button_rect_theme.collidepoint(event.pos):
                 theme = "light" if theme == "dark" else "dark"
@@ -75,16 +118,29 @@ while running:
                 screen.blit(pygame.image.load(map_file), (0, 0))
             # if the key is physically pressed down
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                click_input_coordinates = False
+                click_input_adress = False
+                try:
+                    coord = geocoder(user_text_adress).split()
+                    x = float(coord[0])
+                    y = float(coord[1])
+                    search(x, y, z=z1)
+                    screen.blit(pygame.image.load(map_file), (0, 0))
+                except:
+                    print("ЗАПРОС НЕ КОРЕКТЕН")
             if event.key == pygame.K_BACKSPACE:
                 # stores text except last letter
-                user_text = user_text[0:-1]
+                if click_input_coordinates:
+                    user_text = user_text[0:-1]
+                elif click_input_adress:
+                    user_text_adress = user_text_adress[0:-1]
             elif event.key == pygame.K_PAGEUP:
                 if z1 < 21:
                     slider.setValue(z1 + 1)
             elif event.key == pygame.K_PAGEDOWN:
                 if z1 > 0:
                     slider.setValue(z1 - 1)
-
             elif event.key == pygame.K_UP:
                 y += 0.1
                 search(x, y, z=z1)
@@ -102,13 +158,23 @@ while running:
                 search(x, y, z=z1)
                 screen.blit(pygame.image.load(map_file), (0, 0))
             else:
-                user_text += event.unicode
+                if click_input_coordinates:
+                    user_text += event.unicode
+                if click_input_adress:
+                    user_text_adress += event.unicode
 
-    # Вывод текста на экран
+    # Вывод текста координат на экран
+
     pygame.draw.rect(screen, color, input_rect)
     text_surface = base_font.render(user_text, True, (255, 255, 255))
     screen.blit(text_surface, (input_rect.x + 5, input_rect.y + 5))
     input_rect.w = max(100, text_surface.get_width() + 10)
+
+    # Вывод текста адресса на экран
+    pygame.draw.rect(screen, color, input_rect_adress)
+    text_surface_adress = base_font.render(user_text_adress, True, (255, 255, 255))
+    screen.blit(text_surface_adress, (input_rect_adress.x + 5, input_rect_adress.y + 5))
+    input_rect_adress.w = max(100, text_surface_adress.get_width() + 10)
 
     # Вывод кнопки Start на экран
     pygame.draw.rect(screen, (255, 255, 255), button_rect_start)
