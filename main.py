@@ -10,7 +10,7 @@ def search(x, y, z=20):
     ll = f"ll={x},{y}"
     # Готовим запрос.
     # x, y = "37.530887", "55.703118 (37.530887,55.703118)"
-    map_request = f"{server_address}{ll}&z={z}&theme={theme}&apikey={api_key}&pt={main_x},{main_y}"
+    map_request = f"{server_address}{ll}&z={z}&theme={theme}&apikey={api_key}"
     response = requests.get(map_request)
     if not response:
         print("Ошибка выполнения запроса:")
@@ -27,7 +27,6 @@ def search(x, y, z=20):
 # СТАНДАРТНОЕ ИЗОБРОЖЕНИЕ
 z1 = 10
 x, y = 37.530887, 55.703118
-main_x, main_y = 37.530887, 55.703118
 theme = "light"
 map_file = search(x, y, z=z1)
 # Инициализируем pygame
@@ -127,8 +126,7 @@ while running:
     if button_click:
         button_click = False
         try:
-            x, y = list(map(float, user_text.split(",")))
-            main_x, main_y = list(map(float, user_text.split(",")))
+            x, y = user_text.split(",")
             search(x, y, z=z1)
             screen.blit(pygame.image.load(map_file), (0, 0))
         except:
