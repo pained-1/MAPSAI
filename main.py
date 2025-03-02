@@ -5,7 +5,7 @@ from pygame_widgets.textbox import TextBox
 import requests
 
 
-def search_maps(adress):
+def search_maps(address):
     search_api_server = "https://search-maps.yandex.ru/v1/"
     api_key = "dda3ddba-c9ea-4ead-9010-f43fbc15c6e3"
 
@@ -13,7 +13,7 @@ def search_maps(adress):
 
     search_params = {
         "apikey": api_key,
-        "text": adress,
+        "text": address,
         "lang": "ru_RU",
         "ll": address_ll,
         "type": "biz"
@@ -78,7 +78,7 @@ input_rect = pygame.Rect(10, 500, 140, 32)
 color_passive = pygame.Color("grey")
 color = color_passive
 
-# Заготовка для поля ввода адресса с использованием прошлых заготовок
+# Заготовка для поля ввода адреса с использованием прошлых заготовок
 input_rect_objects = pygame.Rect(10, 550, 140, 32)
 user_text_objects = ""
 
@@ -125,7 +125,7 @@ while running:
             # if the key is physically pressed down
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                # при нажатие на enter отключаеться ввод текста и производиться обработка данных из нижнего поля для обьектов
+                # при нажатии на enter отключается ввод текста и производиться обработка данных из нижнего поля для объектов
                 click_input_coordinates = False
                 click_input_objects = False
                 try:
@@ -171,13 +171,12 @@ while running:
                     user_text_objects += event.unicode
 
     # Вывод текста координат на экран
-
     pygame.draw.rect(screen, color, input_rect)
     text_surface = base_font.render(user_text, True, (255, 255, 255))
     screen.blit(text_surface, (input_rect.x + 5, input_rect.y + 5))
     input_rect.w = max(100, text_surface.get_width() + 10)
 
-    # Вывод текста адресса на экран
+    # Вывод текста адреса на экран
     pygame.draw.rect(screen, color, input_rect_objects)
     text_surface_objects = base_font.render(user_text_objects, True, (255, 255, 255))
     screen.blit(text_surface_objects, (input_rect_objects.x + 5, input_rect_objects.y + 5))
