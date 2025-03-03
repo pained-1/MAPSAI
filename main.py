@@ -2,7 +2,6 @@ import os, sys, pygame, requests, pygame_widgets
 from setting import *
 from pygame_widgets.slider import Slider
 from pygame_widgets.textbox import TextBox
-import requests
 
 
 def search_maps(address):
@@ -35,18 +34,13 @@ def search_maps(address):
     return org_address
 
 
-def search(x, y, z=20, points_x="", points_y=""):
+def search(x, y, z=20):
     server_address = "https://static-maps.yandex.ru/v1?"
     api_key = "f3a0fe3a-b07e-4840-a1da-06f18b2ddf13"
     ll = f"ll={x},{y}"
-
-    if points_x and points_y:
-        point = f"450&l=map&pt={points_x},{points_y},pm2ntm"
-    else:
-        point = ""
     # Готовим запрос.
     # x, y = "37.530887", "55.703118 (37.530887,55.703118)"
-    map_request = f"{server_address}{ll}&z={z}&theme={theme}&{point}&apikey={api_key}"
+    map_request = f"{server_address}{ll}&z={z}&theme={theme}&apikey={api_key}&pt={"~".join(points)}"
     response = requests.get(map_request)
     if not response:
         print("Ошибка выполнения запроса:")
@@ -63,6 +57,8 @@ def search(x, y, z=20, points_x="", points_y=""):
 # СТАНДАРТНОЕ ИЗОБРОЖЕНИЕ
 z1 = 10
 x, y = 37.530887, 55.703118
+main_x, main_y = 37.530887, 55.703118
+points = [f"{main_x},{main_y}"]
 theme = "light"
 map_file = search(x, y, z=z1)
 # Инициализируем pygame
@@ -132,7 +128,8 @@ while running:
                     coord = search_maps(user_text_objects).split(",")
                     x = float(coord[0])
                     y = float(coord[1])
-                    search(x, y, z=z1, points_x=x, points_y=y)
+                    points.append(",".join(coord))
+                    search(x, y, z=z1)
                     screen.blit(pygame.image.load(map_file), (0, 0))
                 except:
                     print("ЗАПРОС НЕ КОРЕКТЕН")
@@ -198,7 +195,8 @@ while running:
     if button_click:
         button_click = False
         try:
-            x, y = user_text.split(",")
+            x, y = list(map(float, user_text.split(",")))
+            points.append(user_text)
             search(x, y, z=z1)
             screen.blit(pygame.image.load(map_file), (0, 0))
         except:
