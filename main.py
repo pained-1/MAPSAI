@@ -88,6 +88,11 @@ small_font_theme = pygame.font.SysFont("Corbel", 25)
 text_theme = small_font_theme.render("Change theme", True, (0, 0, 0))
 button_rect_theme = pygame.Rect(450, 550, 150, 40)
 
+# Заготовка для клавиши default
+small_font_default = pygame.font.SysFont("Corbel", 35)
+text_default = small_font_default.render("Default", True, (0, 0, 0))
+button_rect_default = pygame.Rect(470, 450, 140, 40)
+
 # Заготовка для слайдера
 slider = Slider(screen, 250, 500, 150, 20, min=0, max=21, step=1)
 output = TextBox(screen, 300, 550, 50, 40, fontSize=20)
@@ -116,6 +121,11 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if button_rect_theme.collidepoint(event.pos):
                 theme = "light" if theme == "dark" else "dark"
+                search(x, y, z=z1)
+                screen.blit(pygame.image.load(map_file), (0, 0))
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if button_rect_default.collidepoint(event.pos):
+                points[:] = points[:1]
                 search(x, y, z=z1)
                 screen.blit(pygame.image.load(map_file), (0, 0))
             # if the key is physically pressed down
@@ -186,6 +196,10 @@ while running:
     # Вывод кнопки theme на экран
     pygame.draw.rect(screen, (255, 255, 255), button_rect_theme)
     screen.blit(text_theme, (450, 550))
+
+    # Вывод кнопки default на экран
+    pygame.draw.rect(screen, (255, 255, 255), button_rect_default)
+    screen.blit(text_default, (480, 450))
 
     # Вывод слайдера
     output.setText(slider.getValue())
